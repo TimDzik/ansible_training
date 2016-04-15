@@ -1,0 +1,53 @@
+---
+
+- name: update openssl from apt if ----
+  apt: name=openssl state=latest update_cache=yes
+
+- debug: msg="openssl has been updated"
+
+# Create an /etc/motd.tail file with an ascii art from templates
+- name: Set Motd message
+  template: src=asciiart dest=/etc/motd.tail
+
+- debug: msg="motd file created"
+
+- name: Set timezone variables
+  copy: content='{{ timezone }}'
+        dest=/etc/timezone
+        owner=root
+        group=root
+        mode=0644
+        backup=yes
+
+- name: Set timezone
+  command: dpkg-reconfigure --frontend noninteractive tzdata
+
+- debug: msg="timezone set (Paris by default)"
+
+- name: install htop
+  apt: name=htop state=latest update_cache=yes
+
+- debug: msg="htop installed"
+
+- name: install pip and all packages
+  apt: name={{ item }} state=present
+  with_items:
+    - python-pip
+    - python-dev
+    - build-essential
+    - nfs-common
+
+- debug: msg="pip has been installed"
+
+- name: install git
+  apt: name=git state=present
+
+- debug: msg="git has been installed"
+
+# format disk
+- filesystem: fstype=ext4 dev=/dev/xvdf
+
+# Mount the new volume to /data
+- name: Mount the volume just created
+  mount: name="{{ mysql_directory }}" src="{{ mysql_id }}" state=mounted fstype=ext4
+  with_items: new_volume.results

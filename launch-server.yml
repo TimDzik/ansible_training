@@ -1,0 +1,9 @@
+---
+- name: Launch a new EC2 instance
+  hosts: localhost
+  connection: local
+
+  roles:
+    - ec2
+
+- include: site.yml hosts=group_temp

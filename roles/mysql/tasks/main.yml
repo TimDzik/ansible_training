@@ -1,0 +1,18 @@
+---
+# install all mysql packages using apt
+- name: Install Mysql package
+  apt: name={{ item }} state=present
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb
+
+# creating the mysql config
+- name: Create Mysql configuration file
+  template: src=myconfig.j2 dest=/etc/my.cnf
+
+# restarting mysql
+- name: restart mysql
+  service: name=mysql state=restarted
+
+- debug: msg="End of mysql configuration"

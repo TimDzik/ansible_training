@@ -1,0 +1,17 @@
+---
+# install php-fpm
+- name: install php-fpm
+  apt: name=php5-fpm state=installed
+
+# install dependencies
+- name: php install needed modules
+  apt: name={{ item }} state=installed
+  with_items:
+    - php5-common
+    - php5-curl
+    - php5-gd
+    - php5-mysql
+
+# start php5-fpm
+- name: service run php5-fpm
+  action: service name=php5-fpm state=started

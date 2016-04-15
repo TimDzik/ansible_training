@@ -1,0 +1,3 @@
+---
+# timezone variable by default Paris
+timezone: "Europe/Paris"

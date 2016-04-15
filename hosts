@@ -1,0 +1,6 @@
+[wordpress-server]
+webserver2
+
+[default]
+localhost
+ec2-52-58-45-101.eu-central-1.compute.amazonaws.com

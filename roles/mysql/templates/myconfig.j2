@@ -1,0 +1,15 @@
+[mysqld]
+# data directory
+datadir=/var/lib/mysql
+#socket file
+socket=/var/lib/mysql/mysql.sock
+#set the user to be mysql
+user=mysql
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+# msql port (should always be 3306)
+port={{ mysql_port }}
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid

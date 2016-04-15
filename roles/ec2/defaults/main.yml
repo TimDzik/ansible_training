@@ -1,0 +1,11 @@
+---
+ec2_keypair: ansible
+ec2_security_group: sg-01c62169
+ec2_instance_type: t2.micro
+ec2_image: ami-87564feb
+ec2_region: eu-central-1
+ec2_tag_Name: webserver
+ec2_tag_Type: webserver
+ec2_tag_Environment: production
+ec2_volume_size: 8
+ec2_volume_snapshot: snap-9196ada7

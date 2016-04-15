@@ -1,0 +1,13 @@
+---
+- name: Install Base, Nginx, MySQL, PHP-FPM, WordPress
+  hosts: "{{ hosts }}"
+  remote_user: ubuntu
+  sudo_user: root
+  sudo: yes
+
+  roles:
+    - base
+    - mysql
+    - php-fpm
+    - wordpress
+    - nginx
