@@ -2,6 +2,8 @@
 - name: Launch a new EC2 instance
   hosts: localhost
   connection: local
+  vars_files:
+    - aws_keys.yml
 
   roles:
     - ec2

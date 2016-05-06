@@ -3,30 +3,34 @@
 
  - name: Provision EC2 Box
    local_action:
-     #module ec2
+     # module ec2
      module: ec2
-     #keyname is the keypair you can create on the EC2 interface
+     # keyname is the keypair you can create on the EC2 interface
      key_name: "{{ ec2_keypair }}"
-     #security group by default it is the ansible one (inbound HTTP, HTTPS, SSH)
+     # setting up aws access key
+     aws_access_key: "{{ aws_access_key_id }}"
+     # setting up aws secret key
+     aws_secret_key: "{{ aws_secret_access_key }}"
+     # security group by default it is the ansible one (inbound HTTP, HTTPS, SSH)
      group_id: "{{ ec2_security_group }}"
-     #instance type (t2.micro, t2.xlarge..) by default it will be t2.micro (see variables)
+     # instance type (t2.micro, t2.xlarge..) by default it will be t2.micro (see variables)
      instance_type: "{{ ec2_instance_type }}"
-     #ubuntu image by default
+     # ubuntu image by default
      image: "{{ ec2_image }}"
      # region where the server will be (by default frankfurt)
      region: "{{ ec2_region }}"
-     #tag name (webserver) type (webserver) and evironment (production)
+     # tag name (webserver) type (webserver) and evironment (production)
      instance_tags: '{"Name":"{{ ec2_tag_Name }}","Type":"{{ ec2_tag_Type }}","Environment":"{{ ec2_tag_Environment }}"}'
      # wait
      wait: yes
-     #number of instance you want to launch
+     # number of instance you want to launch
      count: 1
-     #attach a volume (by default a gp2 8GB)
+     # attach a volume (by default a gp2 8GB)
      volumes:
        - device_name: /dev/sda1
-         #by default it s an SSD
+         # by default it s an SSD
          volume_type: gp2
-         #by default its a 8GB
+         # by default its a 8GB
          volume_size: "{{ ec2_volume_size }}"
    register: ec2
 
@@ -47,14 +51,21 @@
  - debug: msg="An instance has been created, attaching a new volume for mysql"
 
  - pause: minutes=1
-# Create a new volume
+
+ # Create a new volume
  - name: Create a new volume
    local_action:
      module: ec2_vol
+     # setting up aws access key
+     aws_access_key: "{{ aws_access_key_id }}"
+     # setting up aws secret key
+     aws_secret_key: "{{ aws_secret_access_key }}"
      instance: "{{ item.id }}"
      volume_size: 8
      region: "{{ ec2_region }}"
    with_items: ec2.instances
    register: new_volume
+   tags:
+     - mysqlvolume
 
  - pause: minutes=1

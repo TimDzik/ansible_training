@@ -6,13 +6,21 @@
     - mysql-server
     - mysql-client
     - python-mysqldb
+  tags:
+    - mysql
 
 # creating the mysql config
 - name: Create Mysql configuration file
   template: src=myconfig.j2 dest=/etc/my.cnf
+  tags:
+    - mysql
 
 # restarting mysql
 - name: restart mysql
   service: name=mysql state=restarted
+  tags:
+    - mysql
 
 - debug: msg="End of mysql configuration"
+  tags:
+    - mysql

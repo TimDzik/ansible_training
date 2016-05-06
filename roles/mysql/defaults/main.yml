@@ -1,0 +1,4 @@
+# You shouldn't need to change this it's the default mysql port
+mysql_port: 3306
+mysql_directory: /var/lib/mysql
+mysql_id: /dev/xvdf

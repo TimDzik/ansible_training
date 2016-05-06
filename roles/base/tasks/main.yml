@@ -1,15 +1,26 @@
 ---
 
-- name: update openssl from apt if ----
+- name: Update openssl from apt
   apt: name=openssl state=latest update_cache=yes
+  tags:
+    - openssl
+    - base
 
 - debug: msg="openssl has been updated"
+  tags:
+    - openssl
+    - base
 
 # Create an /etc/motd.tail file with an ascii art from templates
-- name: Set Motd message
-  template: src=asciiart dest=/etc/motd.tail
+- name: Set MOTD message
+  template: src=asciiart dest=/etc/motd
+  tags:
+    - motd
+    - base
 
 - debug: msg="motd file created"
+  tags:
+    - openssl
 
 - name: Set timezone variables
   copy: content='{{ timezone }}'
@@ -18,16 +29,31 @@
         group=root
         mode=0644
         backup=yes
+  tags:
+    - timezone
+    - base
 
 - name: Set timezone
   command: dpkg-reconfigure --frontend noninteractive tzdata
+  tags:
+    - timezone
+    - base
 
 - debug: msg="timezone set (Paris by default)"
+  tags:
+    - timezone
+    - base
 
 - name: install htop
   apt: name=htop state=latest update_cache=yes
+  tags:
+    - htop
+    - base
 
 - debug: msg="htop installed"
+  tags:
+    - htop
+    - base
 
 - name: install pip and all packages
   apt: name={{ item }} state=present
@@ -36,18 +62,36 @@
     - python-dev
     - build-essential
     - nfs-common
+  tags:
+    - pip
+    - base
 
 - debug: msg="pip has been installed"
+  tags:
+    - pip
+    - base
 
 - name: install git
   apt: name=git state=present
+  tags:
+    - git
+    - base
 
 - debug: msg="git has been installed"
+  tags:
+    - git
+    - base
 
 # format disk
 - filesystem: fstype=ext4 dev=/dev/xvdf
+  tags:
+    - mysqlvolume
+    - base
 
 # Mount the new volume to /data
 - name: Mount the volume just created
   mount: name="{{ mysql_directory }}" src="{{ mysql_id }}" state=mounted fstype=ext4
   with_items: new_volume.results
+  tags:
+    - mysqlvolume
+    - base

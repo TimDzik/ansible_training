@@ -2,37 +2,57 @@
 #download wordpress and copy it in /srv/wordpress
 - name: Download WordPress
   get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/srv/wordpress-{{ wp_version }}.tar.gz
+  tags:
+    - wordpress
 
 #we downloaded a tar.gz archive now we have to extract it
 - name: Extract archive
   command: chdir=/srv/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/srv/wordpress
+  tags:
+    - wordpress
 
 #create a group called wordpress
 - name: Add group "wordpress"
   group: name=wordpress
+  tags:
+    - wordpress
 
 #create a wordpress user
 - name: Add user "wordpress"
   user: name=wordpress group=wordpress home=/srv/wordpress/
+  tags:
+    - wordpress
 
 #create a wp database (which will automatically configured in the wp-config.php)
 - name: Create WordPress database
   mysql_db: name={{ wp_db_name }} state=present
+  tags:
+    - wordpress
 
 #create the database user
 - name: Create WordPress database user
   mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
+  tags:
+    - wordpress
 
 # copy the config wp file
 - name: Copy WordPress config file
   template: src=wp-config.php dest=/srv/wordpress/
+  tags:
+    - wordpress
 
 # worpress repo is now owned by the wordpress user
 - name: Change ownership of WordPress installation
   file: path=/srv/wordpress/ owner=wordpress group=wordpress state=directory recurse=yes
+  tags:
+    - wordpress
 
 # start PHP service
 - name: Start php5-fpm Service
   service: name=php5-fpm state=started enabled=yes
+  tags:
+    - wordpress
 
 - debug: msg="End of wordpress configuration"
+  tags:
+    - wordpress

@@ -2,13 +2,21 @@
 # install nginx
 - name: Install nginx
   apt: name=nginx state=present
+  tags:
+    - nginx
 
 # copy config file in conf
 - name: Copy nginx configuration for wordpress
   template: src=default.conf dest=/etc/nginx/sites-available/default
+  tags:
+    - nginx
 
 # restart nginx
 - name: restart nginx
   service: name=nginx state=restarted enabled=yes
+  tags:
+    - nginx
 
 - debug: msg="End of nginx configuration"
+  tags:
+    - nginx
