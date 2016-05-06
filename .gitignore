@@ -1,2 +1,3 @@
 ansible.pem
 *.retry
+vault_password
