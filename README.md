@@ -1,3 +1,6 @@
-Ansible script
-Launch an instance with 2 volumes attached 
-With services: nginx, mysql, php-fpm and wordpress basic configuration
+# Ansible script
+Launch an instance with 2 volumes attached (one for mysql) with the following services:
+- Nginx
+- Mysql
+- Php-fpm
+- Wordpress
